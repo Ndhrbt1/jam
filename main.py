@@ -5,16 +5,23 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 from models.base_tower import draw_base_tower
+from models.bench import draw_bench
 from models.clock import draw_clock_face
 
 #Initialize 3D object
 def init_objects():
-    global base_tower_list
+    global base_tower_list, bench_list
     base_tower_list = glGenLists(1)
+    bench_list = glGenLists(1)
 
     # Compile Clock Tower base
     glNewList(base_tower_list, GL_COMPILE)
     draw_base_tower()
+    glEndList()
+
+    # Compile Benches
+    glNewList(bench_list, GL_COMPILE)
+    draw_bench()
     glEndList()
 
 def main():
@@ -95,6 +102,14 @@ def main():
             glRotatef(90 * i, 0, 1, 0)
             glTranslatef(0, 1.5, 0.35)
             draw_clock_face()
+            glPopMatrix()
+
+        # Place benches around the scene
+        for angle in range(0, 360, 90):
+            glPushMatrix()
+            glRotatef(angle + 45, 0, 1, 0)
+            glTranslatef(1.5, 0, 0)
+            glCallList(bench_list)
             glPopMatrix()
 
         #Update display
