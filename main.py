@@ -7,12 +7,14 @@ from OpenGL.GLU import *
 from models.base_tower import draw_base_tower
 from models.bench import draw_bench
 from models.clock import draw_clock_face
+from models.tree import draw_tree
 
 #Initialize 3D object
 def init_objects():
-    global base_tower_list, bench_list
+    global base_tower_list, bench_list, tree_list
     base_tower_list = glGenLists(1)
     bench_list = glGenLists(1)
+    tree_list = glGenLists(1)
 
     # Compile Clock Tower base
     glNewList(base_tower_list, GL_COMPILE)
@@ -22,6 +24,11 @@ def init_objects():
     # Compile Benches
     glNewList(bench_list, GL_COMPILE)
     draw_bench()
+    glEndList()
+
+    # Compile Trees
+    glNewList(tree_list, GL_COMPILE)
+    draw_tree()
     glEndList()
 
 def main():
@@ -110,6 +117,14 @@ def main():
             glRotatef(angle + 45, 0, 1, 0)
             glTranslatef(1.5, 0, 0)
             glCallList(bench_list)
+            glPopMatrix()
+
+        # Place trees around the scene
+        for angle in range(0, 360, 45):
+            glPushMatrix()
+            glRotatef(angle, 0, 1, 0)
+            glTranslatef(3.0, -0.5, 0)
+            glCallList(tree_list)
             glPopMatrix()
 
         #Update display
