@@ -5,6 +5,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 from models.base_tower import draw_base_tower
+from models.clock import draw_clock_face
 
 #Initialize 3D object
 def init_objects():
@@ -80,13 +81,21 @@ def main():
     # Draw object ground
         glColor3f(0.3, 0.6, 0.3)  # Green ground
         glBegin(GL_QUADS)
-        glVertex3f(-10, -0.01, -10)
-        glVertex3f(10, -0.01, -10)
-        glVertex3f(10, -0.01, 10)
-        glVertex3f(-10, -0.01, 10)
+        glVertex3f(-10, -0.5, -10)
+        glVertex3f(10, -0.5, -10)
+        glVertex3f(10, -0.5, 10)
+        glVertex3f(-10, -0.5, 10)
         glEnd()
 
         glCallList(base_tower_list)
+
+        # Draw clock faces on all 4 sides of the tower
+        for i in range(4):
+            glPushMatrix()
+            glRotatef(90 * i, 0, 1, 0)
+            glTranslatef(0, 1.5, 0.35)
+            draw_clock_face()
+            glPopMatrix()
 
         #Update display
         pygame.display.flip()
