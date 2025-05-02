@@ -8,7 +8,9 @@ from models.base_tower import draw_base_tower
 from models.bench import draw_bench
 from models.city_buildings import draw_city_buildings
 from models.clock import draw_clock_face
+from models.sky import draw_sky
 from models.tree import draw_tree
+from setup.lightning import setup_lighting
 
 #Initialize 3D object
 def init_objects():
@@ -50,6 +52,7 @@ def main():
     glEnable(GL_DEPTH_TEST)
 
     init_objects()
+    setup_lighting()
 
     #Control Mouse Variable
     clock = pygame.time.Clock()
@@ -110,6 +113,7 @@ def main():
 
         glCallList(base_tower_list)
         glCallList(building_list)
+        draw_sky()
 
         # Draw clock faces on all 4 sides of the tower
         for i in range(4):
